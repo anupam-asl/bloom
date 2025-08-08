@@ -18,7 +18,7 @@ Future<void> main() async {
 class BloomHealthApp extends ConsumerWidget {
   const BloomHealthApp({super.key});
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewModel = BloomDashboardViewModel();
