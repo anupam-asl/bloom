@@ -16,9 +16,13 @@ import '../viewmodels/activity_provider.dart';
 import '../viewmodels/food_providers.dart';
 import '../viewmodels/sleep_provider.dart';
 import '../widgets/homepage_widgets/homepage_greetings.dart';
+import 'package:bloom_health_app/features/auth/entities/session.dart';
+
 
 class BloomHomePage extends ConsumerStatefulWidget {
-  const BloomHomePage({super.key});
+  final Session session;
+
+  const BloomHomePage({super.key, required this.session});
 
   @override
   ConsumerState<BloomHomePage> createState() => _BloomHomePageState();

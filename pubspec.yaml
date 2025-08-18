@@ -41,7 +41,6 @@ dependencies:
   riverpod_annotation: ^2.6.1
   firebase_core: ^4.0.0
   firebase_auth: ^6.0.0
-  google_sign_in: ^6.2.1
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   fpdart: ^1.1.1
@@ -49,6 +48,9 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.10
   path_provider: ^2.1.2
   path: ^1.9.0
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^6.1.0
+  flutter_secure_storage: ^9.2.1
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +114,7 @@ flutter:
     - assets/images/icons/walk-fill.svg
     - assets/images/icons/notification_3_line.svg
     - assets/images/icons/arrow_drop_right_line.svg
+    - assets/images/icons/google.png
 
 
 
