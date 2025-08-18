@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:bloom_health_app/core/theme/app_colors.dart';
+
 
 class ReminderCard extends StatelessWidget {
   final String message;
@@ -25,9 +28,22 @@ class ReminderCard extends StatelessWidget {
         final scaledFontSize = baseFontSize * scaleFactor;
         final horizontalPadding = 16.0 * scaleFactor;
         final verticalPadding = 20.0 * scaleFactor;
-        final iconSize = 24.0 * scaleFactor;
-        final arrowIconSize = 16.0 * scaleFactor;
+        final iconSize = 20.0 * scaleFactor;
+        final arrowIconSize = 26.0 * scaleFactor;
         final spacingWidth = 16.0 * scaleFactor;
+
+        // Helper to build a tinted SVG with given size
+        Widget svgIcon(String asset, double size) {
+          return SvgPicture.asset(
+            asset,
+            width: size,
+            height: size,
+            fit: BoxFit.contain,
+            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            // Optional: show nothing while loading
+            placeholderBuilder: (_) => SizedBox(width: size, height: size),
+          );
+        }
 
         return InkWell(
           onTap: onTap,
@@ -39,17 +55,14 @@ class ReminderCard extends StatelessWidget {
               vertical: verticalPadding,
             ),
             decoration: BoxDecoration(
-              color: theme.colorScheme.secondary,
+              color: AppColors.purple,
               borderRadius: BorderRadius.circular(20 * scaleFactor),
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.notifications_active_outlined,
-                  color: Colors.white,
-                  size: iconSize,
-                ),
+                svgIcon('assets/images/icons/notification_3_line.svg', iconSize),
+
                 SizedBox(width: spacingWidth),
                 Expanded(
                   child: Text(
@@ -57,16 +70,12 @@ class ReminderCard extends StatelessWidget {
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.white,
                       fontSize: scaledFontSize,
-                      height: 1.3, // line height for readability
+                      height: 1,
                     ),
                   ),
                 ),
                 SizedBox(width: spacingWidth),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                  size: arrowIconSize,
-                ),
+                svgIcon('assets/images/icons/arrow_drop_right_line.svg', arrowIconSize),
               ],
             ),
           ),

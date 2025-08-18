@@ -18,7 +18,7 @@ class FlourishGreeting extends StatelessWidget {
 
 
         // Scale factors, adjust max/min as per your preference
-        final double scaleFactor = (width / 300).clamp(0.8, 1.2);
+        final double scaleFactor = (width / 350).clamp(0.8, 1.2);
 
         final double headlineFontSize = headlineBaseSize * scaleFactor;
         final double bodyFontSize = bodyBaseSize * scaleFactor;

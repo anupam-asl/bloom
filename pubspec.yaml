@@ -34,6 +34,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  sqflite: ^2.3.0
   flutter_svg: ^2.0.9
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^2.6.1
@@ -44,6 +45,10 @@ dependencies:
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   fpdart: ^1.1.1
+  drift: ^2.16.0
+  sqlite3_flutter_libs: ^0.5.10
+  path_provider: ^2.1.2
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +66,7 @@ dev_dependencies:
   riverpod_lint: ^2.6.5
   freezed: ^3.1.0
   json_serializable: ^6.9.5
+  drift_dev: ^2.16.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -74,8 +80,41 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/Frame212.svg
-    - assets/score_morning.svg
+    - assets/images/petals/calorie_yellow_petal.svg
+    - assets/images/petals/glucose_blue_petal.svg
+    - assets/images/petals/sleep_sky_petal.svg
+    - assets/images/petals/score_morning.svg
+    - assets/images/petals/score_petals_bg.svg
+    - assets/images/petals/activities_pink_fg.svg
+    - assets/images/petals/calories_orange_fg.svg
+    - assets/images/petals/glucose_purple_fg.svg
+    - assets/images/petals/sleep_blue_fg.svg
+    - assets/images/petals/frame_violet.svg
+    - assets/images/petals/frame212.svg
+    - assets/images/petals/frame212_new.svg
+    - assets/images/petals/frame213new.svg
+    - assets/images/petals/frame201new.svg
+    - assets/images/petals/activities_pink_fg_new.svg
+    - assets/images/petals/calories_orange_fg_old.svg
+
+
+
+
+    - assets/images/icons/account.svg
+    - assets/images/icons/ai.svg
+    - assets/images/icons/home.svg
+    - assets/images/icons/time.svg
+    - assets/images/icons/activity.svg
+    - assets/images/icons/morning.svg
+    - assets/images/icons/rest.svg
+    - assets/images/icons/restaurant-line.svg
+    - assets/images/icons/union.svg
+    - assets/images/icons/walk-fill.svg
+    - assets/images/icons/notification_3_line.svg
+    - assets/images/icons/arrow_drop_right_line.svg
+
+
+
     - assets/fonts/
   fonts:
     - family: Inter

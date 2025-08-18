@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomePageHeader extends StatelessWidget {
   const HomePageHeader({super.key});
@@ -25,14 +26,23 @@ class HomePageHeader extends StatelessWidget {
         Row(
           children: [
             CircleAvatar(
-              backgroundColor: iconColor.withOpacity(0.1),
-              child: Icon(Icons.face_retouching_natural, color: iconColor),
+              backgroundColor: Colors.transparent, // no gray circle
+
+              child: SvgPicture.asset(
+                'assets/images/icons/ai.svg',
+                width: 32, // match your design
+                height: 32,
+              ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 6),
             CircleAvatar(
-              backgroundColor: theme.colorScheme.secondary,
-              radius: 18,
-              child: const Icon(Icons.person, color: Colors.white),
+              backgroundColor: Colors.transparent, // no gray circle
+
+              child: SvgPicture.asset(
+                'assets/images/icons/account.svg',
+                width: 26, // match your design
+                height: 26,
+              ),
             ),
           ],
         ),

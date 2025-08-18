@@ -22,7 +22,7 @@ class SignInPage extends ConsumerWidget {
           if (data != null) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => BloomHomePage(viewModel: viewModel)),
+              MaterialPageRoute(builder: (context) => BloomHomePage()),
                   (_) => false,
             );
           }

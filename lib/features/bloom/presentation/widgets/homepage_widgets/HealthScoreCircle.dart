@@ -11,12 +11,9 @@ class HealthScoreCircle extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // The size of the circle will be the smallest dimension (width or height)
         final double size = constraints.biggest.shortestSide;
-
-        // Calculate font sizes relative to the circle size
-        final double scoreFontSize = size * 0.4; // 40% of circle size
-        final double slashFontSize = size * 0.15; // 15% of circle size
+        final double scoreFontSize = size * 0.4;
+        final double slashFontSize = size * 0.15;
 
         return Container(
           width: size,
@@ -26,7 +23,7 @@ class HealthScoreCircle extends StatelessWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: theme.shadowColor.withOpacity(0.3),
+                color: theme.shadowColor.withOpacity(.3),
                 blurRadius: size * 0.25,  // scale blur based on size
                 spreadRadius: size * 0.06,
               ),

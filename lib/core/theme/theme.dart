@@ -4,9 +4,9 @@ import 'app_colors.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
-      primaryColor: AppColors.primary, // Use custom white color
+      primaryColor: AppColors.primary,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: AppColors.primary, // Optional for consistency
+      scaffoldBackgroundColor: AppColors.primary,
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.black,
@@ -15,7 +15,7 @@ class AppTheme {
         bodyLarge: TextStyle(color: Colors.black),
         bodyMedium: TextStyle(color: Colors.black54),
       ),
-      // You can optionally override icon themes, button themes, etc.
+      //
     );
   }
 
