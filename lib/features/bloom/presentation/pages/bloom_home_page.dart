@@ -20,9 +20,10 @@ import 'package:bloom_health_app/features/auth/entities/session.dart';
 
 
 class BloomHomePage extends ConsumerStatefulWidget {
-  final Session session;
+  // final Session session;
 
-  const BloomHomePage({super.key, required this.session});
+  // const BloomHomePage({super.key, required this.session});
+  const BloomHomePage({super.key});
 
   @override
   ConsumerState<BloomHomePage> createState() => _BloomHomePageState();

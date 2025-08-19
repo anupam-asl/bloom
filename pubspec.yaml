@@ -62,6 +62,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.4.0
   riverpod_generator: ^2.6.5
   build_runner: ^2.5.4
   custom_lint: ^0.7.6
@@ -98,6 +99,10 @@ flutter:
     - assets/images/petals/frame201new.svg
     - assets/images/petals/activities_pink_fg_new.svg
     - assets/images/petals/calories_orange_fg_old.svg
+    - assets/images/petals/ellipse1.svg
+    - assets/images/petals/ellipse2.svg
+    - assets/images/petals/ellipse3.svg
+    - assets/images/petals/ellipse4.svg
 
 
 

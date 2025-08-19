@@ -7,6 +7,8 @@ import 'package:bloom_health_app/core/services/storage_service.dart';
 import 'package:bloom_health_app/features/auth/pages/start_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:bloom_health_app/features/bloom/presentation/widgets/splash_screen.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,9 +44,11 @@ class BloomHealthApp extends ConsumerWidget {
           }
 
           if (snapshot.data != null) {
-            return BloomHomePage(session: snapshot.data!);
+            // return BloomHomePage(session: snapshot.data!);
+            return BloomSplashScreen();
           } else {
-            return const StartPage();
+            // return const StartPage();
+            return BloomSplashScreen();
           }
         },
       ),

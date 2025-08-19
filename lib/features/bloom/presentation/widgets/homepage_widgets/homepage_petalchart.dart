@@ -1,23 +1,19 @@
 import 'package:bloom_health_app/features/bloom/presentation/viewmodels/activity_provider.dart';
 import 'package:bloom_health_app/features/bloom/presentation/viewmodels/food_providers.dart';
 import 'package:flutter/material.dart';
-import 'package:bloom_health_app/features/bloom/presentation/viewmodels/bloom_dashboard_vm.dart';
 import 'dart:math';
-
 import '../../viewmodels/sleep_provider.dart';
 import 'HealthScoreCircle.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bloom_health_app/features/bloom/presentation/viewmodels/glucose_providers.dart';
 
+//  Add this at top-level (NOT inside a class/method)
+enum PetalQuadrant { bottomLeft, topLeft, bottomRight, topRight }
+
 class HomepagePetalChart extends ConsumerStatefulWidget {
-
   final VoidCallback? onAnimationComplete;
-
-  const HomepagePetalChart({
-    super.key,
-    this.onAnimationComplete,
-  });
+  const HomepagePetalChart({super.key, this.onAnimationComplete});
 
   @override
   ConsumerState<HomepagePetalChart> createState() => _HomepagePetalChartState();
@@ -30,7 +26,6 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
   late final Animation<double> _fillAnim;
 
   double _lastGlucosePerc = 0.0;
-  double _currentGlucosePerc = 0.0;
 
   @override
   void initState() {
@@ -60,11 +55,10 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
         curve: const Interval(0.7, 1.0, curve: Curves.easeOutCubic),
       ),
     );
-    //  Call the callback when the animation finishes
+
     _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed &&
-          widget.onAnimationComplete != null) {
-        widget.onAnimationComplete!();
+      if (status == AnimationStatus.completed) {
+        widget.onAnimationComplete?.call();
       }
     });
 
@@ -74,22 +68,18 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
   @override
   Widget build(BuildContext context) {
     final glucoseState = ref.watch(glucoseViewModelProvider);
-    final sleepState = ref.watch(sleepViewModelProvider);
+    final sleepState   = ref.watch(sleepViewModelProvider);
     final calorieState = ref.watch(foodViewModelProvider);
-    final activityState = ref.watch(activityViewModelProvider);
-
-    // final activityState = ref.watch(activityViewModelProvider);
+    final activityState= ref.watch(activityViewModelProvider);
 
     double glucoseValue = 0;
-    double sleepValue = 0;
+    double sleepValue   = 0;
     double calorieValue = 0;
-    double activityValue = 0;
+    double activityValue= 0;
 
     glucoseState.when(
       data: (entries) {
-        if (entries.isNotEmpty) {
-          glucoseValue = entries.last.valueMgDl.toDouble();
-        }
+        if (entries.isNotEmpty) glucoseValue = entries.last.valueMgDl.toDouble();
       },
       loading: () {},
       error: (_, __) {},
@@ -98,10 +88,7 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
     sleepState.when(
       data: (entries) {
         if (entries.isNotEmpty) {
-          debugPrint("Sleep entries count: ${entries.length}");
-          debugPrint("Last heartRate: ${entries.last.heartRate}");
           sleepValue = entries.last.heartRate.toDouble();
-          debugPrint("sleepValue used for petal: $sleepValue");
         }
       },
       loading: () {},
@@ -110,9 +97,7 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
 
     calorieState.when(
       data: (entries) {
-        if (entries.isNotEmpty) {
-          calorieValue = entries.last.calorie.toDouble();
-        }
+        if (entries.isNotEmpty) calorieValue = entries.last.calorie.toDouble();
       },
       loading: () {},
       error: (_, __) {},
@@ -120,39 +105,27 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
 
     activityState.when(
       data: (entries) {
-        if (entries.isNotEmpty) {
-          activityValue = entries.last.exerciseMin.toDouble();
-        }
+        if (entries.isNotEmpty) activityValue = entries.last.exerciseMin.toDouble();
       },
       loading: () {},
       error: (_, __) {},
     );
 
-    const double minGlucose = 10;
-    const double maxGlucose = 100;
-    const double minSleep = 60; //heartrate in sleep
-    const double maxSleep = 120; //heartrate in sleep
-    const double minCalories = 100;
-    const double maxCalories = 500;
-    const double minActivity = 5;
-    const double maxActivity = 100;
+    const minGlucose = 10.0,  maxGlucose = 100.0;
+    const minSleep   = 60.0,  maxSleep   = 120.0;
+    const minCalories= 100.0, maxCalories= 500.0;
+    const minActivity= 5.0,   maxActivity= 100.0;
 
-    double glucosePerc = ((glucoseValue - minGlucose) /
-        (maxGlucose - minGlucose)).clamp(0.0, 1.0);
-    double sleepPerc = ((sleepValue - minSleep) / (maxSleep - minSleep)).clamp(
-        0.0, 1.0);
-    double caloriePerc = ((calorieValue - minCalories) /
-        (maxCalories - minCalories)).clamp(0.0, 1.0);
-    double activityPerc = ((activityValue - minActivity) /
-        (maxActivity - minActivity)).clamp(0.0, 1.0);
+    final glucosePerc = ((glucoseValue  - minGlucose ) / (maxGlucose  - minGlucose )).clamp(0.0, 1.0);
+    final sleepPerc   = ((sleepValue    - minSleep   ) / (maxSleep    - minSleep   )).clamp(0.0, 1.0);
+    final caloriePerc = ((calorieValue  - minCalories) / (maxCalories - minCalories)).clamp(0.0, 1.0);
+    final activityPerc= ((activityValue - minActivity) / (maxActivity - minActivity)).clamp(0.0, 1.0);
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, __) {
-        final size = MediaQuery
-            .of(context)
-            .size;
-        final minSide = size.shortestSide * 0.85;
+        final size     = MediaQuery.of(context).size;
+        final minSide  = size.shortestSide * 0.85;
         final halfSide = minSide / 2;
 
         return Transform.rotate(
@@ -169,54 +142,57 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
                   ),
                 ),
 
-                // Calorie Petal
+                // Calories (top right)
                 TweenAnimationBuilder<double>(
-                  tween: Tween<double>(
-                    begin: 0.0,
-                    end: caloriePerc,
-                  ),
+                  tween: Tween<double>(begin: 0.0, end: caloriePerc),
                   duration: const Duration(milliseconds: 800),
-                  builder: (context, value, _) {
-                    return getCaloriePositioned(halfSide, value);
-                  },
+                  builder: (context, value, _) => _buildPetal(
+                    halfSide: halfSide,
+                    percValue: value,
+                    assetPath: 'assets/images/petals/calories_orange_fg.svg',
+                    quadrant: PetalQuadrant.bottomLeft,
+                    align: Alignment.bottomLeft,
+                  ),
                 ),
 
-                // Activity Petal
+                // Activity (bottom right)
                 TweenAnimationBuilder<double>(
-                  tween: Tween<double>(
-                    begin: 0.0,
-                    end: activityPerc,
-                  ),
+                  tween: Tween<double>(begin: 0.0, end: activityPerc),
                   duration: const Duration(milliseconds: 800),
-                  builder: (context, value, _) {
-                    return getActivitiesPositioned(halfSide, value);
-                  },
+                  builder: (context, value, _) => _buildPetal(
+                    halfSide: halfSide,
+                    percValue: value,
+                    assetPath: 'assets/images/petals/activities_pink_fg.svg',
+                    quadrant: PetalQuadrant.topLeft,
+                    align: Alignment.topLeft,
+                  ),
                 ),
 
-
-                // Glucose Petal
+                // Glucose ( top left)
                 TweenAnimationBuilder<double>(
-                  tween: Tween<double>(
-                    begin: _lastGlucosePerc,
-                    end: glucosePerc,
-                  ),
+                  tween: Tween<double>(begin: _lastGlucosePerc, end: glucosePerc),
                   duration: const Duration(milliseconds: 800),
                   onEnd: () => _lastGlucosePerc = glucosePerc,
-                  builder: (context, value, _) {
-                    return getGlucosePositioned(halfSide, value);
-                  },
+                  builder: (context, value, _) => _buildPetal(
+                    halfSide: halfSide,
+                    percValue: value,
+                    assetPath: 'assets/images/petals/glucose_purple_fg.svg',
+                    quadrant: PetalQuadrant.bottomRight,
+                    align: Alignment.bottomRight,
+                  ),
                 ),
 
-                // Sleep Petal
+                // Sleep (bottom left)
                 TweenAnimationBuilder<double>(
-                  tween: Tween<double>(
-                    begin: 0.0,
-                    end: sleepPerc,
-                  ),
+                  tween: Tween<double>(begin: 0.0, end: sleepPerc),
                   duration: const Duration(milliseconds: 800),
-                  builder: (context, value, _) {
-                    return getSleepPositioned(halfSide, value);
-                  },
+                  builder: (context, value, _) => _buildPetal(
+                    halfSide: halfSide,
+                    percValue: value,
+                    assetPath: 'assets/images/petals/sleep_blue_fg.svg',
+                    quadrant: PetalQuadrant.topRight,
+                    align: Alignment.topRight,
+                  ),
                 ),
 
                 // Center Circle
@@ -232,9 +208,11 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
                     ),
                   ),
                 ),
+
+                // Border
                 CustomPaint(
                   size: Size(minSide, minSide),
-                  painter: PetalBorderPainter(halfSide/2.4), // halfSide = radius
+                  painter: PetalBorderPainter(halfSide / 2.4),
                 ),
               ],
             ),
@@ -244,139 +222,58 @@ class _HomepagePetalChartState extends ConsumerState<HomepagePetalChart>
     );
   }
 
-
-  Positioned getCaloriePositioned(double halfSide, double percValue) {
+  // EXACT same scaling/offset math as your original 4 methods
+  Positioned _buildPetal({
+    required double halfSide,
+    required double percValue,
+    required String assetPath,
+    required PetalQuadrant quadrant,
+    required Alignment align,
+  }) {
     final displayPerc = percValue * 0.7;
-
     final normalizedScale = displayPerc.clamp(0.0, 0.7);
 
     double leftOffset = 0;
-    double topOffset = 0;
+    double topOffset  = 0;
 
     if (displayPerc < 0.7) {
       leftOffset = -18.3333 * (displayPerc - 0.7);
-      topOffset = 23.3333 * (displayPerc - 0.7);
+      topOffset  =  23.3333 * (displayPerc - 0.7);
+    }
+
+    late double left;
+    late double top;
+
+    switch (quadrant) {
+      case PetalQuadrant.bottomLeft:
+        left = halfSide + leftOffset;
+        top  = topOffset;
+        break;
+      case PetalQuadrant.topLeft:
+        left = halfSide + leftOffset;
+        top  = halfSide - topOffset;
+        break;
+      case PetalQuadrant.bottomRight:
+        left = 0 - leftOffset;
+        top  = 0 + topOffset;
+        break;
+      case PetalQuadrant.topRight:
+        left = 0 - leftOffset;
+        top  = halfSide - topOffset;
+        break;
     }
 
     return Positioned(
-      left: halfSide + leftOffset,
-      top: topOffset,
+      left: left,
+      top: top,
       width: halfSide,
       height: halfSide,
       child: Align(
-        alignment: Alignment.bottomLeft,
+        alignment: align,
         child: SizedBox(
           width: halfSide * normalizedScale,
           height: halfSide * normalizedScale,
-          child: SvgPicture.asset(
-            'assets/images/petals/calories_orange_fg.svg',
-            fit: BoxFit.contain,
-          ),
-        ),
-      ),
-    );
-  }
-
-
-  Positioned getActivitiesPositioned(double halfSide, double percValue) {
-    final displayPerc = percValue * 0.7;
-
-    final normalizedScale = displayPerc.clamp(0.0, 0.7);
-
-    double leftOffset = 0;
-    double topOffset = 0;
-
-    if (displayPerc < 0.7) {
-      leftOffset = -18.3333 * (displayPerc - 0.7);
-      topOffset = 23.3333 * (displayPerc - 0.7);
-    }
-
-    return Positioned(
-      left: halfSide + leftOffset,
-      top: halfSide - topOffset,
-      width: halfSide,
-      height: halfSide,
-      child: Container(
-        // color: Colors.purple.withOpacity(0.2),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: SizedBox(
-            width: halfSide * normalizedScale,
-            height: halfSide * normalizedScale,
-            child: SvgPicture.asset(
-              'assets/images/petals/activities_pink_fg.svg',
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Positioned getGlucosePositioned(double halfSide, double percValue) {
-    final displayPerc = percValue * 0.7;
-
-    final normalizedScale = displayPerc.clamp(0.0, 0.7);
-
-    double leftOffset = 0;
-    double topOffset = 0;
-
-    if (displayPerc < 0.7) {
-      leftOffset = -18.3333 * (displayPerc - 0.7);
-      topOffset = 23.3333 * (displayPerc - 0.7);
-    }
-
-    return Positioned(
-      left: 0 - leftOffset,
-      top: 0 + topOffset,
-      width: halfSide,
-      height: halfSide,
-      child: Container(
-        // color: Colors.purple.withOpacity(0.2),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: SizedBox(
-            width: halfSide * normalizedScale,
-            height: halfSide * normalizedScale,
-            child: SvgPicture.asset(
-              'assets/images/petals/glucose_purple_fg.svg',
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Positioned getSleepPositioned(double halfSide, double percValue) {
-    final displayPerc = percValue * 0.7;
-
-    final normalizedScale = displayPerc.clamp(0.0, 0.7);
-
-    double leftOffset = 0;
-    double topOffset = 0;
-
-    if (displayPerc < 0.7) {
-      leftOffset = -18.3333 * (displayPerc - 0.7);
-      topOffset = 23.3333 * (displayPerc - 0.7);
-    }
-    return Positioned(
-      left: 0 - leftOffset,
-      top: halfSide - topOffset,
-      width: halfSide,
-      height: halfSide,
-      child: Container(
-        // color: Colors.purple.withOpacity(0.2),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: SizedBox(
-            width: halfSide * normalizedScale,
-            height: halfSide * normalizedScale,
-            child: SvgPicture.asset(
-              'assets/images/petals/sleep_blue_fg.svg',
-              fit: BoxFit.contain,
-            ),
-          ),
+          child: SvgPicture.asset(assetPath, fit: BoxFit.contain),
         ),
       ),
     );
@@ -390,18 +287,13 @@ class PetalBorderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-
     final circlePaint = Paint()
       ..color = Colors.white.withOpacity(0.3)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
-
-    // Draw outermost circle
     canvas.drawCircle(center, radius, circlePaint);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-
-
