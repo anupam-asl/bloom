@@ -8,7 +8,7 @@ import 'package:bloom_health_app/features/auth/pages/start_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:bloom_health_app/features/bloom/presentation/widgets/splash_screen.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,11 +30,20 @@ class BloomHealthApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Bloom',
-      theme: AppTheme.lightTheme,
-      home: FutureBuilder<Session?>(
+    return ScreenUtilInit(
+      // 👇 set your Figma design size here
+      designSize: const Size(402, 874), // Example: iPhone 13 size
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Bloom',
+          theme: AppTheme.lightTheme,
+          home: child,
+        );
+      },
+      child: FutureBuilder<Session?>(
         future: StorageService.loadSession(),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {

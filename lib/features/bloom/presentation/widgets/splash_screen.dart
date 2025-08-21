@@ -13,14 +13,19 @@ class _BloomSplashScreenState extends State<BloomSplashScreen>
   late final List<Animation<double>> _angles;
 
   final List<String> _petalFiles = [
-    'assets/images/petals/ellipse1.svg',
-    'assets/images/petals/ellipse2.svg',
-    'assets/images/petals/ellipse3.svg',
     'assets/images/petals/ellipse4.svg',
+    'assets/images/petals/ellipse3.svg',
+    'assets/images/petals/ellipse2.svg',
+    'assets/images/petals/ellipse1.svg',
   ];
 
-  // Final spread (right → left, ellipse4 rotates the most)
-  final List<double> _finalAngles = [-0.1, -0.2, -0.4, -0.8];
+  // petal 1 fixed, petals 2-4 rotate from right → left
+  final List<double> _finalAngles = [
+    0.8,  // Petal 1 → already slightly rotated right
+    0.2,  // Petal 2 → rotates a bit left
+    -0.5, // Petal 3 → rotates more left
+    -0.9, // Petal 4 → rotates furthest left
+  ];
 
   // Z-order: 4 under, 1 top
   final List<int> _zOrder = [3, 2, 1, 0];
@@ -73,19 +78,15 @@ class _BloomSplashScreenState extends State<BloomSplashScreen>
     const double petalWidth = 64.32;
     const double petalHeight = 125;
 
-    // anchor offset: bottom center of each ellipse
-    const Offset anchor = Offset(petalWidth / 2, petalHeight);
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: Center( // ✅ keeps everything centered on any screen
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             // Flower
             SizedBox(
               width: 200,
-              height: 200,
               child: Stack(
                 clipBehavior: Clip.none,
                 children: List.generate(4, (layer) {
@@ -94,10 +95,10 @@ class _BloomSplashScreenState extends State<BloomSplashScreen>
                     animation: _controllers[i],
                     builder: (context, child) {
                       return Align(
-                        alignment: Alignment.center, // put anchor at stack center
+                        alignment: Alignment.center,
                         child: Transform.rotate(
                           angle: _angles[i].value,
-                          origin: anchor, // rotate around bottom center
+                          alignment: Alignment.bottomCenter,
                           child: SvgPicture.asset(
                             _petalFiles[i],
                             width: petalWidth,
@@ -110,7 +111,8 @@ class _BloomSplashScreenState extends State<BloomSplashScreen>
                 }),
               ),
             ),
-            const SizedBox(height: 32),
+
+            const SizedBox(height: 12), // small gap
             const Text(
               "Bloom Health",
               style: TextStyle(

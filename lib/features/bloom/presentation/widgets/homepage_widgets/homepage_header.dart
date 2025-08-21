@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePageHeader extends StatelessWidget {
   const HomePageHeader({super.key});
@@ -15,33 +16,33 @@ class HomePageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final iconColor = theme.iconTheme.color!;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+
         Text(
           getFormattedDate(),
-          style: theme.textTheme.bodySmall,
+          style: theme.textTheme.bodyMedium,
         ),
+
         Row(
           children: [
             CircleAvatar(
               backgroundColor: Colors.transparent, // no gray circle
-
               child: SvgPicture.asset(
                 'assets/images/icons/ai.svg',
-                width: 32, // match your design
-                height: 32,
+                width: 32.w,
+                height: 32.w,
               ),
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: 6.w),
             CircleAvatar(
               backgroundColor: Colors.transparent, // no gray circle
-
               child: SvgPicture.asset(
                 'assets/images/icons/account.svg',
-                width: 26, // match your design
-                height: 26,
+                width: 28.w,
+                height: 28.w,
               ),
             ),
           ],

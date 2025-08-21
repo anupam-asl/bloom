@@ -20,4 +20,14 @@ class AppColors {
   static const Color textLighterGray = Color(0xFF727272);
   static const border = Color(0xFFE0E0E0);
   static const danger = Color(0xFFFF5252);
+
+  //Diptesh Color::
+  static const Color sleepSky = Color(0xB24FAFFF);
+  static const Color activityPurple = Color(0xB5CA72F0);
+  static const Color foodYellow = Color(0xB2F59D0E);
+  static const Color glucosePatterns = Color(0xFF383838);
+  static const Color glucosePatterns2 = Color(0xFF6C6C6C);
+  static const Color selectedColorFilter = Color(0xFF6B4EFF);
+  static const Color glucoseDisplay = Color(0xFF3B2CA0);
+
 }
